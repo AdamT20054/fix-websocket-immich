@@ -100,7 +100,7 @@
   const resetForm = () => {
     filter = {
       query: '',
-      queryType: defaultQueryType(),
+      queryType: defaultQueryType(), // retain from localStorage or default
       personIds: new SvelteSet(),
       tagIds: new SvelteSet(),
       location: {},

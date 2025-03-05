@@ -101,29 +101,28 @@
 
   const onSubmit = () => {
     const searchType = getSearchType();
-    let payload: SmartSearchDto | MetadataSearchDto = {};
+    let payload: SmartSearchDto | MetadataSearchDto = {} as SmartSearchDto | MetadataSearchDto;
 
     switch (searchType) {
-    case 'smart': {
-      payload.query = value;
-
-    break;
+      case 'smart': {
+        payload = { query: value } as SmartSearchDto; // Type assertion to SmartSearchDto
+        break;
+      }
+      case 'metadata': {
+        console.log('metadata search', value);
+        payload = { originalFileName: value } as MetadataSearchDto; // Type assertion to MetadataSearchDto
+        break;
+      }
+      case 'description': {
+        payload = { description: value } as MetadataSearchDto; // Type assertion to MetadataSearchDto (or SmartSearchDto if needed)
+        break;
+      }
     }
-    case 'metadata': {
-      console.log('metadata search', value);
-      payload.originalFileName = value;
-
-    break;
-    }
-    case 'description': {
-      payload.description = value;
-
-    break;
-    }}
 
     handlePromiseError(handleSearch(payload));
     saveSearchTerm(value);
   };
+
 
 
 
