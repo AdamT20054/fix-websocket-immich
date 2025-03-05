@@ -152,6 +152,11 @@
     localStorage.setItem('searchQueryType', filter.queryType);
     search();
   };
+
+  // Will be called whenever queryType changes, not just onsubmit.
+  $effect(() => {
+    localStorage.setItem('searchQueryType', filter.queryType);
+  });
 </script>
 
 <FullScreenModal icon={mdiTune} width="extra-wide" title={$t('search_options')} {onClose}>
@@ -162,6 +167,7 @@
 
       <!-- TEXT -->
       <SearchTextSection bind:query={filter.query} bind:queryType={filter.queryType} />
+
 
       <!-- TAGS -->
       <SearchTagsSection bind:selectedTags={filter.tagIds} />
