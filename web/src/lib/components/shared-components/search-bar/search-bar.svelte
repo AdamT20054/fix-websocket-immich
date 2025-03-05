@@ -36,11 +36,13 @@
   const listboxId = generateId();
 
   const handleSearch = async (payload: SmartSearchDto | MetadataSearchDto) => {
+    console.log('handleSearch', payload);
     const params = getMetadataSearchQuery(payload);
 
     closeDropdown();
     showFilter = false;
     $isSearchEnabled = false;
+    console.log(`approute.search params: ${AppRoute.SEARCH}?${params}`);
     await goto(`${AppRoute.SEARCH}?${params}`);
     onSearch?.();
   };
