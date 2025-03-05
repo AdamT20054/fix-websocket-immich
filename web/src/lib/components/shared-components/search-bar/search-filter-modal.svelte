@@ -55,9 +55,15 @@
     return value === null ? undefined : value;
   }
 
+  function defaultQueryType(): SearchFilter['queryType'] {
+    const storedQueryType = localStorage.getItem('searchQueryType') as SearchFilter['queryType'];
+    const validQueryTypes: Set<SearchFilter['queryType']> = new Set(['smart', 'metadata', 'description']);
+    return validQueryTypes.has(storedQueryType) ? storedQueryType : 'smart';
+  }
+
   let filter: SearchFilter = $state({
     query: 'query' in searchQuery ? searchQuery.query : searchQuery.originalFileName || '',
-    queryType: 'query' in searchQuery ? 'smart' : 'metadata',
+    queryType: defaultQueryType(),
     personIds: new SvelteSet('personIds' in searchQuery ? searchQuery.personIds : []),
     tagIds: new SvelteSet('tagIds' in searchQuery ? searchQuery.tagIds : []),
     location: {
@@ -90,7 +96,7 @@
   const resetForm = () => {
     filter = {
       query: '',
-      queryType: 'smart',
+      queryType: defaultQueryType(),
       personIds: new SvelteSet(),
       tagIds: new SvelteSet(),
       location: {},
@@ -113,7 +119,7 @@
     const query = filter.query || undefined;
 
     let payload: SmartSearchDto | MetadataSearchDto = {
-      query: filter.queryType === 'smart' ? query : undefined,
+      query: filter.queryType === defaultQueryType() ? query : undefined,
       originalFileName: filter.queryType === 'metadata' ? query : undefined,
       description: filter.queryType === 'description' ? query : undefined,
       country: filter.location.country,
