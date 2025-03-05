@@ -148,6 +148,8 @@
 
   const onsubmit = (event: Event) => {
     event.preventDefault();
+    // Store the query type for future use.
+    localStorage.setItem('searchQueryType', filter.queryType);
     search();
   };
 </script>
