@@ -36,6 +36,7 @@
   const listboxId = generateId();
 
   const handleSearch = async (payload: SmartSearchDto | MetadataSearchDto) => {
+
     const params = getMetadataSearchQuery(payload);
 
     closeDropdown();
@@ -44,6 +45,7 @@
     await goto(`${AppRoute.SEARCH}?${params}`);
     onSearch?.();
   };
+
 
   const clearSearchTerm = (searchTerm: string) => {
     input?.focus();
@@ -98,7 +100,12 @@
   };
 
   const onSubmit = () => {
-    handlePromiseError(handleSearch({ query: value }));
+    const searchType = getSearchType();
+    let payload: SmartSearchDto | MetadataSearchDto;
+
+    payload = searchType === 'smart' ? { query: value } as SmartSearchDto : { query: value } as MetadataSearchDto;
+
+    handlePromiseError(handleSearch(payload));
     saveSearchTerm(value);
   };
 
@@ -143,6 +150,15 @@
     event.preventDefault();
     onSubmit();
   };
+
+  function getSearchType(): 'smart' | 'metadata' {
+    const t = localStorage.getItem('searchType');
+
+    return t === 'smart' ? 'smart' : 'metadata'; // Default to metadata search
+  }
+
+
+
 </script>
 
 <svelte:window
