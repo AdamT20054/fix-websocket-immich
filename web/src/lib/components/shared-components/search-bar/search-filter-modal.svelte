@@ -55,10 +55,14 @@
     return value === null ? undefined : value;
   }
 
+  function storeQueryType(type: SearchFilter['queryType']) {
+    localStorage.setItem('searchQueryType', type);
+  }
+
   function defaultQueryType(): SearchFilter['queryType'] {
     const storedQueryType = localStorage.getItem('searchQueryType') as SearchFilter['queryType'];
     const validQueryTypes: Set<SearchFilter['queryType']> = new Set(['smart', 'metadata', 'description']);
-    return validQueryTypes.has(storedQueryType) ? storedQueryType : 'smart';
+    return validQueryTypes.has(storedQueryType) ? storedQueryType : 'smart'; // default to smart, to reflect original functionality before this PR.
   }
 
   let filter: SearchFilter = $state({
@@ -148,14 +152,13 @@
 
   const onsubmit = (event: Event) => {
     event.preventDefault();
-    // Store the query type for future use.
-    localStorage.setItem('searchQueryType', filter.queryType);
+    storeQueryType(filter.queryType);
     search();
   };
 
   // Will be called whenever queryType changes, not just onsubmit.
   $effect(() => {
-    localStorage.setItem('searchQueryType', filter.queryType);
+    storeQueryType(filter.queryType);
   });
 </script>
 
