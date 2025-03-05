@@ -101,13 +101,32 @@
 
   const onSubmit = () => {
     const searchType = getSearchType();
-    let payload: SmartSearchDto | MetadataSearchDto;
+    let payload: SmartSearchDto | MetadataSearchDto = {};
 
-    payload = searchType === 'smart' ? ({ query: value } as SmartSearchDto) : ({ query: value } as MetadataSearchDto);
+    switch (searchType) {
+    case 'smart': {
+      payload.query = value;
+
+    break;
+    }
+    case 'metadata': {
+      console.log('metadata search', value);
+      payload.originalFileName = value;
+
+    break;
+    }
+    case 'description': {
+      payload.description = value;
+
+    break;
+    }}
 
     handlePromiseError(handleSearch(payload));
     saveSearchTerm(value);
   };
+
+
+
 
   const onClear = () => {
     value = '';
@@ -151,11 +170,11 @@
     onSubmit();
   };
 
-  function getSearchType(): 'smart' | 'metadata' {
-    const t = localStorage.getItem('searchType');
-
-    return t === 'smart' ? 'smart' : 'metadata'; // Default to metadata search
+  function getSearchType(): 'smart' | 'metadata' | 'description' {
+    const t = localStorage.getItem('searchQueryType');
+    return t === 'smart' || t === 'description' ? t : 'metadata';
   }
+
 </script>
 
 <svelte:window

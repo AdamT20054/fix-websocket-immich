@@ -100,7 +100,7 @@
   const resetForm = () => {
     filter = {
       query: '',
-      queryType: defaultQueryType(), // retain from localStorage or default
+      queryType: defaultQueryType(),
       personIds: new SvelteSet(),
       tagIds: new SvelteSet(),
       location: {},
@@ -123,7 +123,7 @@
     const query = filter.query || undefined;
 
     let payload: SmartSearchDto | MetadataSearchDto = {
-      query: filter.queryType === defaultQueryType() ? query : undefined,
+      query: filter.queryType === 'smart' ? query : undefined,
       originalFileName: filter.queryType === 'metadata' ? query : undefined,
       description: filter.queryType === 'description' ? query : undefined,
       country: filter.location.country,
@@ -144,6 +144,8 @@
 
     onSearch(payload);
   };
+
+
 
   const onreset = (event: Event) => {
     event.preventDefault();
