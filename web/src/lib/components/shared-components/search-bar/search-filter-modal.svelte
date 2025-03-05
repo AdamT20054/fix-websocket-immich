@@ -171,7 +171,6 @@
       <!-- TEXT -->
       <SearchTextSection bind:query={filter.query} bind:queryType={filter.queryType} />
 
-
       <!-- TAGS -->
       <SearchTagsSection bind:selectedTags={filter.tagIds} />
 
