@@ -105,7 +105,7 @@
             class="hidden lg:flex"
             variant="ghost"
             color="secondary"
-            >{$t('upload')}
+          >{$t('upload')}
           </Button>
           <CircleIconButton
             onclick={onUploadClick}
